@@ -5,11 +5,11 @@
 import pyperclip, re
 
 phoneRegex = re.compile(r'''(
-    (\d{3}|\(\d{3}\))?  #Area Code
-    (\s|-|\.)?          #Separator
-    (\d{3})               #First 3 digits
-    (\s|-|\.)           #Separator
-    (\d{4})               #Last four Digits
+    (\d{3}|\(\d{3}\))?           #Area Code
+    (\s|-|\.)?                   #Separator
+    (\d{3})                      #First 3 digits
+    (\s|-|\.)                    #Separator
+    (\d{4})                      #Last four Digits
     (\s*(ext|x|ext.)\s*\d{2,5})? #Extension
 )''', re.VERBOSE)
 
@@ -25,13 +25,15 @@ emailRegex = re.compile(r'''(
 # DONE: Find Matches in the clipboard text
 
 text = str(pyperclip.paste())
+
 matches = []
 for groups in phoneRegex.findall(text):
     phoneNum = '-'.join([groups[1],groups[3],groups[5]])
-    if groups[8] != '':
-        phoneNum += ' x' + groups[8]
+    
+    if groups[7] != '':
+        phoneNum += ' x' + groups[7]
     matches.append(phoneNum)
-for groups in emailRegex(text):
+for groups in emailRegex.findall(text):
     matches.append(groups[0])
 
 
